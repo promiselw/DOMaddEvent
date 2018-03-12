@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>事件绑定兼容方法</title>
+</head>
+<body>
+
+<button id="btn">dddd</button>
+
+<script>
+
+    //定义一个获取id的方法
+    var $ = function(id) {
+      return document.getElementById(id);
+    };
+
+    //兼容浏览器的方式
+    //addEventListener()是标准的绑定事件监听函数的方法，是W3C所支持的，Chrome、FireFox、Opera、Safari、IE9.0及其以上版本都支持该函数；
+    //但是，IE8.0及其以下版本不支持该方法，它使用attachEvent()来绑定事件监听函数。所以，这种绑定事件的方法必须要处理浏览器兼容问题。
+    function addEvent(obj,type,handle) {
+      try{
+        obj.addEventListener(type,handle);
+      }catch (e){
+        try {
+          obj.addEvent('on'+type,handle)
+        }catch (e){
+          obj['on'+type] = handle;
+        }
+      }
+    }
+
+    addEvent($('btn'),'click',getMessage);
+
+    //定义回调函数
+    function getMessage() {
+      console.log('yylw');
+    }
+
+</script>
+</body>
+</html>
